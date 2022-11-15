@@ -44,8 +44,8 @@ class TestDataFramePopulating(unittest.TestCase):
         self.assertEqual(__class__.df.iloc[0]["job_id"], "12345")
     
     def test_all_rows_populated(self):
-        self.assertNotEquals(__class__.df.iloc[0]["job_id"], None)
-        self.assertNotEquals(__class__.df.iloc[1]["job_id"], None)
+        self.assertNotEqual(__class__.df.iloc[0]["job_id"], None)
+        self.assertNotEqual(__class__.df.iloc[1]["job_id"], None)
 
     def test_extracting_data_order(self):
         extracted_data = _extract_job_data([__class__.moc_row_1])
@@ -55,35 +55,3 @@ class TestDataFramePopulating(unittest.TestCase):
         extracted_data = _extract_job_data([__class__.moc_row_2])
         self.assertEqual(len(extracted_data), 1)
     
-class GetJobDataDf(unittest.TestCase):
-    moc_data = {"searchResult": 
-                {"jobs": 
-                 {"items": 
-                  [
-                    {
-                    "jobId": "12345", "title": "Teacher", "displayContractTerms": "Maternity",
-                    "displayJobStartDate": "As soon as possible", "advert": {"displayEndDateShort": "July 4th 2011"},
-                    "employerName": "St. Johns Academy ltd.", "displayLocation": "Kerry",
-                    "displaySalary": "£30,000", "jobPageCanonicalUrl": "https://fastapi.tiangolo.com/"
-                    }
-                  ]
-                 }
-                }
-               }
-    empty_moc_data = {"searchResult": 
-            {"jobs": 
-                {"items": 
-                [
-                ]
-                }
-            }
-            }
-
-    def test_returns_populated_df(self):
-        df = get_job_data_df(__class__.moc_data)
-        self.assertEqual(len(df), 1)
-        self.assertEqual(df.iloc[0]["salary"], "£30,000")
-    
-    def test_not_returns_none_if_no_data(self):
-        df = get_job_data_df(__class__.empty_moc_data)
-        self.assertNotIsInstance(df, NoneType)
