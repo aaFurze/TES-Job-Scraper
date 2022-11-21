@@ -35,11 +35,13 @@ class UserPreferenceStrings:
         you would like to search for jobs for. Separate choices with commas (,)""", valid_subjects)))
         self.no_pages = self.clean_user_input_numeric(input("Enter the maximum number of pages of results you would like to scrape (page size is 20, default number of pages is 3)\n"))
     
-    def clean_user_input(self, val: str) -> str:
+    @staticmethod
+    def clean_user_input(val: str) -> str:
         val = val.lower().strip()
         return val
 
-    def clean_user_input_numeric(self, val: str) -> Union[int, float]:
+    @staticmethod
+    def clean_user_input_numeric(val: str) -> Union[int, float]:
         val = val.strip()
         num_str = ""
 
@@ -47,6 +49,7 @@ class UserPreferenceStrings:
             if char.isnumeric() or char == ".":
                 num_str += char
         
+        # Makes TES Scraper default to searching in a radius of 10 miles, and retrieve a maximum of 60 job postings (3 pages results).
         if len(num_str) == 0 or num_str == ".": return 3
 
         if num_str.find("."):
@@ -56,6 +59,12 @@ class UserPreferenceStrings:
 
     @staticmethod
     def _generate_text_list(prompt_body: str, choices: list) -> str:
+        """
+        Used to generate a padded string for the user prompt options.
+        If a choice is too long, it will cause the following prompt (if it is on the same line) to be out of kilter compared to 
+        other options.    
+        """
+
         output = prompt_body
 
         for i, choice in enumerate(choices):
@@ -69,8 +78,6 @@ class UserPreferenceStrings:
 
 
 class FilterCreator:
-
-
     def __init__(self, user_preferences_input: UserPreferenceStrings, setup_on_init: bool = False) -> None:
         self.user_preferences_input = user_preferences_input
         self.lat: float
