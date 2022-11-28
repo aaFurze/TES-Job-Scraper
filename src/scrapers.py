@@ -70,7 +70,11 @@ def _get_num_pages(first_page: str) -> int:
     content = json.loads(first_page)
     return content["searchResult"]["jobs"]["metadata"]["pagination"]["totalpages"]
 
-def get_location_json(location: str):
+def get_location_data_json(location: str) -> dict:
+    raw: dict = _get_location_raw_json(location)
+    return raw.get("results", [])
+
+def _get_location_raw_json(location: str):
     url_start = "https://www.tes.com/api/autocomplete/location?q="
     url_end = "&g=gb&l=5"
 
