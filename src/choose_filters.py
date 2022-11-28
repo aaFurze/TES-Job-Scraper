@@ -1,7 +1,7 @@
 import difflib
 from typing import List, Union
 
-from .scrapers import get_location_json
+from .scrapers import get_location_data_json
 
 
 # Todo: Add guidance to user input prompts.
@@ -92,17 +92,15 @@ class FilterCreator:
 
     # Call to setup the filter.
     def create_filter_values(self, location: str, distance: str, positions: str, workplaces: str, subjects: str, no_pages: str):
-        self.lat, self.long = self.get_location_values(location)
+        self.lat, self.long = self.get_location_coordinates(location)
         self.distance = self.get_distance_value(distance)
         self.positions = self._get_values_from_list(positions, valid_positions)
         self.workplaces = self._get_values_from_list(workplaces, valid_workplaces)
         self.subjects = self._get_values_from_list(subjects, valid_subjects)
         self.no_pages = self._get_no_pages_value(no_pages)
     
-    def get_location_values(self, location: str) -> List[float]:
-        locations_json = get_location_json(location)
-        locations_data = locations_json["results"]
-        print(locations_data)
+    def get_location_coordinates(self, location: str) -> List[float]:
+        locations_data = get_location_data_json(location)
         closest_match = None
         highscore = 0
         for location_data in locations_data:
