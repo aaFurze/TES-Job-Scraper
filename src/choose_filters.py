@@ -4,7 +4,6 @@ from typing import List, Union
 from .scrapers import get_location_data_json
 
 
-# Todo: Add guidance to user input prompts.
 valid_distances = [3, 5, 10, 15, 20, 30, 50, 70, 100, 500]
 valid_workplaces = ["Secondary", "Primary", "Special Education", "Further Education", "Independent Senior"]
 valid_positions = ["Teaching and Lecturing", "Leadership", "Non-Teaching/Support"]
@@ -25,14 +24,10 @@ class UserPreferenceStrings:
 
     def prompt_for_user_preferences(self):
         self.location = self.clean_user_input(input("Enter the county, city or town which you would like to find jobs around.\n"))
-        self.distance = self.clean_user_input_numeric(input(self._generate_text_list("""Enter the distance you would like to be search
-         from the target location in miles (choice will be rounded to values specified below).""", valid_distances)))
-        self.workplaces = self.clean_user_input(input(self._generate_text_list("""Select the workplace 
-        numbers that you would like to search for jobs for. Separate choices with commas (,)""", valid_workplaces)))
-        self.positions = self.clean_user_input(input(self._generate_text_list("""Select the position 
-        numbers you would like to search jobs for. Separate choices with commas (,)""", valid_positions)))
-        self.subjects = self.clean_user_input(input(self._generate_text_list("""Select the subjects 
-        you would like to search for jobs for. Separate choices with commas (,)""", valid_subjects)))
+        self.distance = self.clean_user_input_numeric(input(self._generate_text_list("""Select the radius (in miles) around which you would like to search for jobs (Select from the values specified below).""", valid_distances)))
+        self.workplaces = self.clean_user_input(input(self._generate_text_list("""Select the workplace numbers that you would like to search for jobs for. Separate choices with commas (,)""", valid_workplaces)))
+        self.positions = self.clean_user_input(input(self._generate_text_list("""Select the position numbers you would like to search jobs for. Separate choices with commas (,)""", valid_positions)))
+        self.subjects = self.clean_user_input(input(self._generate_text_list("""Select the subjects you would like to search for jobs for. Separate choices with commas (,)""", valid_subjects)))
         self.no_pages = self.clean_user_input_numeric(input("Enter the maximum number of pages of results you would like to scrape (page size is 20, default number of pages is 3)\n"))
     
     @staticmethod
@@ -120,17 +115,9 @@ class FilterCreator:
         return latlon[0], latlon[1]
     
     def get_distance_value(self, distance: int) -> int:
-        
-        min_diff = 10000
-        output_index = 0
-        for i, val in enumerate(valid_distances):
-            diff = abs(val - distance)
-            if diff < min_diff:
-                min_diff = diff
-                output_index = i
-
-        
-        return output_index
+        if distance > 10: return 10
+        if distance < 0: return 0
+        return int(distance)
     
     @staticmethod
     def _get_values_from_list(input_values: str, check_against_values: List[str]) -> List[str]:

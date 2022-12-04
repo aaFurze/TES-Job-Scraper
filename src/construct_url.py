@@ -20,7 +20,7 @@ class ConstructURL:
     
 
     def construct_url(self) -> str:
-        url_start = "https://www.tes.com/api/jobs/browser/search-v3?siteCountry=gb&&"
+        url_start = "https://www.tes.com/api/jobs/browser/search-v3?siteCountry=gb&&keywords=&"
         url_page = self._get_current_page_url(self.page_no)
         url_location = self._get_position_url(self.lat, self.long)
         url_distance = self._get_distance_url(self.distance_val)
