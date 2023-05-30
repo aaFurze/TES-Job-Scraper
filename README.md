@@ -5,9 +5,9 @@ A Program that Scrapes basic job information for a variety of Teaching Jobs post
 
 # Contents
 
-###  * What this WebScraper does
-###  * Pre-requisites/Requirements to use the WebScraper
-###  * Using the WebScraper
+###  - What this WebScraper does
+###  - Pre-requisites/Requirements to use the WebScraper
+###  - Using the WebScraper
 
   
   
